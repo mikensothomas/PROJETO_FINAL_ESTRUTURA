@@ -153,7 +153,6 @@ int main() {
                 int pontosRemocao;
                 printf("Informe a pontuação para remover o jogador: ");
                 scanf("%d", &pontosRemocao);
-
                 raiz = remover(raiz, pontosRemocao);
                 printf("Jogador removido com sucesso!\n");
                 break;
