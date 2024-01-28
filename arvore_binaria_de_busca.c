@@ -160,7 +160,7 @@ int main() {
                 scanf("%d", &novoJogador.assistencias);
 
                 char chave[50];
-                printf("Digite a chave de busca (pontos/rebotes/assistencias): ");
+                printf("Digite a chave de busca: ");
                 scanf("%s", chave);
 
                 arvore = inserir_jogador(arvore, novoJogador, chave);
@@ -173,7 +173,7 @@ int main() {
                 scanf("%d", &pontos);
 
                 char chave[50];
-                printf("Digite a chave de busca (pontos/rebotes/assistencias): ");
+                printf("Digite a chave de busca: ");
                 scanf("%s", chave);
 
                 No *resultado_de_busca = buscar_jogador(arvore, pontos, chave);
@@ -190,7 +190,7 @@ int main() {
                 scanf("%d", &pontos);
 
                 char chave[50];
-                printf("Digite a chave de busca (pontos/rebotes/assistencias): ");
+                printf("Digite a chave de busca: ");
                 scanf("%s", chave);
 
                 arvore = remover_jogador(arvore, pontos, chave);
