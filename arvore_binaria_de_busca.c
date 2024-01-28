@@ -176,9 +176,9 @@ int main() {
                 printf("Digite a chave de busca (pontos/rebotes/assistencias): ");
                 scanf("%s", chave);
 
-                No *resultadoBusca = buscar_jogador(arvore, pontos, chave);
-                if (resultadoBusca != NULL) {
-                    printf("Jogador encontrado: %s\n", resultadoBusca->jogador.nome);
+                No *resultado_de_busca = buscar_jogador(arvore, pontos, chave);
+                if (resultado_de_busca != NULL) {
+                    printf("Jogador encontrado: %s\n", resultado_de_busca->jogador.nome);
                 } else {
                     printf("Jogador não encontrado.\n");
                 }
