@@ -128,30 +128,88 @@ void liberar_arvore(No *raiz) {
     }
 }
 
+void menu() {
+    printf("\n......MENU......\n");
+    printf("\t1 - Inserir jogador\n");
+    printf("\t2 - Buscar jogador por pontos\n");
+    printf("\t3 - Remover jogador por pontos\n");
+    printf("\t4 - Listar jogadores em ordem de pontos\n");
+    printf("\t5 - Sair\n");
+    printf("Escolha uma opção: ");
+}
+
 int main() {
     No *arvore = NULL;
 
-    Jogador jogador1 = {"Jogador1", 20, 5, 10};
-    Jogador jogador2 = {"Jogador2", 15, 8, 12};
-    Jogador jogador3 = {"Jogador3", 25, 3, 8};
+    while (1) {
+        menu();
+        
+        int opcao;
+        scanf("%d", &opcao);
 
-    arvore = inserir_jogador(arvore, jogador1, "pontos");
-    arvore = inserir_jogador(arvore, jogador2, "pontos");
-    arvore = inserir_jogador(arvore, jogador3, "pontos");
+        switch (opcao) {
+            case 1: {
+                Jogador novoJogador;
+                printf("\nDigite o nome do jogador: ");
+                scanf("%s", novoJogador.nome);
+                printf("Digite os pontos do jogador: ");
+                scanf("%d", &novoJogador.pontos);
+                printf("Digite os rebotes do jogador: ");
+                scanf("%d", &novoJogador.rebotes);
+                printf("Digite as assistências do jogador: ");
+                scanf("%d", &novoJogador.assistencias);
 
-    No *resultadoBusca = buscar_jogador(arvore, 15, "pontos");
-    if (resultadoBusca != NULL) {
-        printf("Jogador encontrado: %s\n", resultadoBusca->jogador.nome);
-    } else {
-        printf("Jogador não encontrado.\n");
+                char chave[50];
+                printf("Digite a chave de busca (pontos/rebotes/assistencias): ");
+                scanf("%s", chave);
+
+                arvore = inserir_jogador(arvore, novoJogador, chave);
+                printf("Jogador inserido com sucesso!\n");
+                break;
+            }
+            case 2: {
+                int pontos;
+                printf("\nDigite os pontos para buscar o jogador: ");
+                scanf("%d", &pontos);
+
+                char chave[50];
+                printf("Digite a chave de busca (pontos/rebotes/assistencias): ");
+                scanf("%s", chave);
+
+                No *resultadoBusca = buscar_jogador(arvore, pontos, chave);
+                if (resultadoBusca != NULL) {
+                    printf("Jogador encontrado: %s\n", resultadoBusca->jogador.nome);
+                } else {
+                    printf("Jogador não encontrado.\n");
+                }
+                break;
+            }
+            case 3: {
+                int pontos;
+                printf("\nDigite os pontos para remover o jogador: ");
+                scanf("%d", &pontos);
+
+                char chave[50];
+                printf("Digite a chave de busca (pontos/rebotes/assistencias): ");
+                scanf("%s", chave);
+
+                arvore = remover_jogador(arvore, pontos, chave);
+                printf("Jogador removido com sucesso!\n");
+                break;
+            }
+            case 4:
+                printf("\nLista de jogadores em ordem de pontos:\n");
+                listar_em_ordem(arvore, "pontos");
+                break;
+            case 5:
+                liberar_arvore(arvore);
+                printf("\nPrograma encerrado.\n");
+                return 0;
+            default:
+                printf("\nOpção inválida. Tente novamente.\n");
+                break;
+        }
     }
-
-    arvore = remover_jogador(arvore, 20, "pontos");
-
-    printf("Lista de jogadores em ordem de pontos:\n");
-    listar_em_ordem(arvore, "pontos");
-
-    liberar_arvore(arvore);
 
     return 0;
 }
