@@ -39,9 +39,18 @@ No *inserir_jogador(No *raiz, Jogador jogador, char chave_de_busca[]) {
         valorAtual = raiz->jogador.assistencias;
     }
 
-    if (valorAtual > jogador.pontos) {
+    int valorJogador = 0;
+    if (strcmp(chave_de_busca, "pontos") == 0) {
+        valorJogador = jogador.pontos;
+    } else if (strcmp(chave_de_busca, "rebotes") == 0) {
+        valorJogador = jogador.rebotes;
+    } else if (strcmp(chave_de_busca, "assistencias") == 0) {
+        valorJogador = jogador.assistencias;
+    }
+
+    if (valorJogador < valorAtual) {
         raiz->esquerda = inserir_jogador(raiz->esquerda, jogador, chave_de_busca);
-    } else if (valorAtual < jogador.pontos) {
+    } else if (valorJogador > valorAtual) {
         raiz->direita = inserir_jogador(raiz->direita, jogador, chave_de_busca);
     }
 
