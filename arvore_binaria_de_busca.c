@@ -92,6 +92,14 @@ void listarEmOrdem(No* raiz) {
         listarEmOrdem(raiz->direita);
     }
 }
+
+int calcularTamanho(No* raiz) {
+    if (raiz == NULL) {
+        return 0;
+    }
+    return 1 + calcularTamanho(raiz->esquerda) + calcularTamanho(raiz->direita);
+}
+
 void exibirMenu() {
     printf("\nMenu:\n");
     printf("\t1 - Inserir jogador\n");
@@ -153,6 +161,7 @@ int main() {
             case 4:
                 printf("Lista de jogadores em ordem de pontos:\n");
                 listarEmOrdem(raiz);
+                printf("O tamanho da arvore é: %d ", calcularTamanho(raiz));
                 break;
             case 0:
                 printf("Saindo do programa. Obrigado!\n");
