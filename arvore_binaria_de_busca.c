@@ -107,16 +107,16 @@ No *remover_jogador(No *raiz, int pontos, char chaveDeBusca[]) {
     return raiz;
 }
 
-void listar_em_ordem(No *raiz, char chaveDeBusca[]) {
+void imprimir_jogador_em_ordem(No *raiz, char chaveDeBusca[]) {
     if (raiz != NULL) {
-        listar_em_ordem(raiz->esquerda, chaveDeBusca);
+        imprimir_jogador_em_ordem(raiz->esquerda, chaveDeBusca);
 
         printf("%s - %s: %d\n", raiz->jogador.nome, chaveDeBusca, 
                (strcmp(chaveDeBusca, "pontos") == 0) ? raiz->jogador.pontos :
                (strcmp(chaveDeBusca, "rebotes") == 0) ? raiz->jogador.rebotes :
                raiz->jogador.assistencias);
 
-        listar_em_ordem(raiz->direita, chaveDeBusca);
+        imprimir_jogador_em_ordem(raiz->direita, chaveDeBusca);
     }
 }
 
@@ -199,7 +199,7 @@ int main() {
             }
             case 4:
                 printf("\nLista de jogadores em ordem de pontos:\n");
-                listar_em_ordem(arvore, "pontos");
+                imprimir_jogador_em_ordem(arvore, "pontos");
                 break;
             case 5:
                 liberar_arvore(arvore);
