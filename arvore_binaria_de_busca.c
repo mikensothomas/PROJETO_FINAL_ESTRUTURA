@@ -69,25 +69,25 @@ No *encontrar_no_minimo(No *raiz) {
     return raiz;
 }
 
-No *remover_jogador(No *raiz, int pontos, char chaveDeBusca[]) {
+No *remover_jogador(No *raiz, int pontos, char chave_de_busca[]) {
     if (raiz == NULL) {
         return raiz;
     }
 
     int valorAtual = 0;
-    if (strcmp(chaveDeBusca, "pontos") == 0) {
+    if (strcmp(chave_de_busca, "pontos") == 0) {
         valorAtual = raiz->jogador.pontos;
-    } else if (strcmp(chaveDeBusca, "rebotes") == 0) {
+    } else if (strcmp(chave_de_busca, "rebotes") == 0) {
         valorAtual = raiz->jogador.rebotes;
-    } else if (strcmp(chaveDeBusca, "assistencias") == 0) {
+    } else if (strcmp(chave_de_busca, "assistencias") == 0) {
         valorAtual = raiz->jogador.assistencias;
     }
 
     if (pontos < valorAtual) {
-        raiz->esquerda = remover_jogador(raiz->esquerda, pontos, chaveDeBusca);
+        raiz->esquerda = remover_jogador(raiz->esquerda, pontos, chave_de_busca);
     }
     else if (pontos > valorAtual) {
-        raiz->direita = remover_jogador(raiz->direita, pontos, chaveDeBusca);
+        raiz->direita = remover_jogador(raiz->direita, pontos, chave_de_busca);
     }
     else {
         if (raiz->esquerda == NULL) {
@@ -102,21 +102,20 @@ No *remover_jogador(No *raiz, int pontos, char chaveDeBusca[]) {
 
         No *temp = encontrar_no_minimo(raiz->direita);
         raiz->jogador = temp->jogador;
-        raiz->direita = remover_jogador(raiz->direita, temp->jogador.pontos, chaveDeBusca);
+        raiz->direita = remover_jogador(raiz->direita, temp->jogador.pontos, chave_de_busca);
     }
     return raiz;
 }
 
-void imprimir_jogador_em_ordem(No *raiz, char chaveDeBusca[]) {
+void imprimir_jogador_em_ordem(No *raiz, char chave_de_busca[]) {
     if (raiz != NULL) {
-        imprimir_jogador_em_ordem(raiz->esquerda, chaveDeBusca);
+        imprimir_jogador_em_ordem(raiz->esquerda, chave_de_busca);
 
-        printf("%s - %s: %d\n", raiz->jogador.nome, chaveDeBusca, 
-               (strcmp(chaveDeBusca, "pontos") == 0) ? raiz->jogador.pontos :
-               (strcmp(chaveDeBusca, "rebotes") == 0) ? raiz->jogador.rebotes :
-               raiz->jogador.assistencias);
+        printf("Nome: %s - Pontos: %d, Rebotes: %d, Assistências: %d\n",
+               raiz->jogador.nome, raiz->jogador.pontos,
+               raiz->jogador.rebotes, raiz->jogador.assistencias);
 
-        imprimir_jogador_em_ordem(raiz->direita, chaveDeBusca);
+        imprimir_jogador_em_ordem(raiz->direita, chave_de_busca);
     }
 }
 
