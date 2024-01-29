@@ -116,7 +116,7 @@ void imprimir_lista_removidos(ListaJR* listaRemovidos) {
         return;
     }
 
-    printf("Lista de jogadores removidos:\n");
+    printf("\\\\\\\\\\Lista de jogadores removidos://///////\n");
     while (listaRemovidos != NULL) {
         printf("Nome: %s, Pontos: %d, Rebotes: %d, Assistencias: %d\n",
                listaRemovidos->jogador.nome, listaRemovidos->jogador.pontos,
@@ -134,13 +134,13 @@ void liberar_lista_removidos(ListaJR* listaRemovidos) {
 }
 
 void exibirMenu() {
-    printf("\nMenu:\n");
-    printf("\t1 - Inserir jogador\n");
-    printf("\t2 - Buscar jogador por pontos\n");
-    printf("\t3 - Remover jogador por pontos\n");
-    printf("\t4 - Listar jogadores em ordem de pontos\n");
-    printf("\t5 - Listar jogadores removidos\n");
-    printf("\t0 - Sair\n");
+    printf("\n\\\\\\\\\\MENU://///////\n");
+    printf("\t0 - Sair do programa\n");
+    printf("\t1 - Inserir jogador no jogo\n");
+    printf("\t2 - Buscar jogador pela pontuação\n");
+    printf("\t3 - Remover jogador pela pontuação\n");
+    printf("\t4 - Imprimir jogadores em ordem de pontos\n");
+    printf("\t5 - Listar todos os jogadores removidos\n");
 }
 
 int main() {
@@ -156,6 +156,7 @@ int main() {
         switch (opcao) {
             case 1: {
                 Jogador novoJogador;
+                printf("\n\n");
                 printf("Informe o nome do jogador: ");
                 scanf("%s", novoJogador.nome);
                 printf("Informe a pontuação do jogador: ");
@@ -166,17 +167,19 @@ int main() {
                 scanf("%d", &novoJogador.assistencias);
 
                 raiz = inserir_jogadores(raiz, novoJogador);
-                printf("Jogador inserido com sucesso!\n");
+                printf("Jogador inserido\n");
                 break;
             }
             case 2: {
                 int pontosBusca;
+                printf("\n\n");
                 printf("Informe a pontuação para buscar o jogador: ");
                 scanf("%d", &pontosBusca);
 
                 No* jogadorBuscado = buscar_jogadores(raiz, pontosBusca);
                 if (jogadorBuscado != NULL) {
-                    printf("Jogador encontrado - Nome: %s, Pontos: %d, Rebotes: %d, Assistencias: %d\n",
+                    printf("\\\\\\\\\\Lista de jogador(es) encontrado(s)://///////");
+                    printf("Nome: %s, Pontos: %d, Rebotes: %d, Assistencias: %d\n",
                            jogadorBuscado->jogador.nome, jogadorBuscado->jogador.pontos,
                            jogadorBuscado->jogador.rebotes, jogadorBuscado->jogador.assistencias);
                 } else {
@@ -185,6 +188,7 @@ int main() {
                 break;
             }
             case 3: {
+                printf("\n\n");
                 int pontosRemocao;
                 printf("Informe a pontuação para remover o jogador: ");
                 scanf("%d", &pontosRemocao);
@@ -193,17 +197,21 @@ int main() {
                 break;
             }
             case 4:
-                printf("Lista de jogadores em ordem de pontos:\n");
+                printf("\n\n");
+                printf("\\\\\\\\\\Lista de jogadores em ordem de pontos://///////\n");
                 imprimir_em_ordem(raiz);
                 printf("O tamanho da arvore é: %d\n", calcular_tamanho(raiz));
                 break;
             case 5:
+            printf("\n\n");
                 imprimir_lista_removidos(listaRemovidos);
                 break;
             case 0:
+                printf("\n\n");
                 printf("Saindo do programa. Obrigado!\n");
                 break;
             default:
+                printf("\n\n");
                 printf("Opcao invalida. Tente novamente.\n");
         }
     } while (opcao != 0);
