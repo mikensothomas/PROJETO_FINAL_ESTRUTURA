@@ -134,7 +134,7 @@ void liberar_lista_removidos(ListaJR* listaRemovidos) {
 }
 
 void exibirMenu() {
-    printf("\n\\\\\\\\\\MENU://///////\n");
+    printf("\n\\\\\\\\\\MENU://///////\n\n");
     printf("\t0 - Sair do programa\n");
     printf("\t1 - Inserir jogador no jogo\n");
     printf("\t2 - Buscar jogador pela pontuação\n");
