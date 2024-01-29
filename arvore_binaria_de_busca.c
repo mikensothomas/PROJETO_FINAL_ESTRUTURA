@@ -21,11 +21,11 @@ typedef struct ListaJR {
 } ListaJR;
 
 No* criar_no(Jogador jogador) {
-    No* novoNo = (No*)malloc(sizeof(No));
-    novoNo->jogador = jogador;
-    novoNo->esquerda = NULL;
-    novoNo->direita = NULL;
-    return novoNo;
+    No* novo_no = (No*)malloc(sizeof(No));
+    novo_no->jogador = jogador;
+    novo_no->esquerda = NULL;
+    novo_no->direita = NULL;
+    return novo_no;
 }
 
 No* inserir_jogadores(No* raiz, Jogador jogador) {
