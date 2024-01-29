@@ -207,8 +207,8 @@ int main() {
                 imprimir_lista_removidos(listaRemovidos);
                 break;
             case 0:
-                printf("\n\n");
-                printf("Saindo do programa. Obrigado!\n");
+                printf("\n");
+                printf("Saindo do programa. Obrigado!\n\n");
                 break;
             default:
                 printf("\n\n");
