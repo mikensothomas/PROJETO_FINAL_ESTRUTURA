@@ -15,6 +15,11 @@ typedef struct No {
     struct No* direita;
 } No;
 
+typedef struct ListaJogadoresRemovidos {
+    Jogador jogador;
+    struct ListaJogadoresRemovidos* proximo;
+} ListaJogadoresRemovidos;
+
 No* criarNo(Jogador jogador) {
     No* novoNo = (No*)malloc(sizeof(No));
     novoNo->jogador = jogador;
@@ -56,16 +61,22 @@ No* encontrarMinimo(No* no) {
     return no;
 }
 
-No* remover(No* raiz, int pontos) {
+No* remover(No* raiz, int pontos, ListaJogadoresRemovidos** listaRemovidos) {
     if (raiz == NULL) {
         return raiz;
     }
 
     if (pontos < raiz->jogador.pontos) {
-        raiz->esquerda = remover(raiz->esquerda, pontos);
+        raiz->esquerda = remover(raiz->esquerda, pontos, listaRemovidos);
     } else if (pontos > raiz->jogador.pontos) {
-        raiz->direita = remover(raiz->direita, pontos);
+        raiz->direita = remover(raiz->direita, pontos, listaRemovidos);
     } else {
+        // Adicionar jogador removido à lista
+        ListaJogadoresRemovidos* novoRemovido = (ListaJogadoresRemovidos*)malloc(sizeof(ListaJogadoresRemovidos));
+        novoRemovido->jogador = raiz->jogador;
+        novoRemovido->proximo = *listaRemovidos;
+        *listaRemovidos = novoRemovido;
+
         if (raiz->esquerda == NULL) {
             No* temp = raiz->direita;
             free(raiz);
@@ -78,7 +89,7 @@ No* remover(No* raiz, int pontos) {
 
         No* temp = encontrarMinimo(raiz->direita);
         raiz->jogador = temp->jogador;
-        raiz->direita = remover(raiz->direita, temp->jogador.pontos);
+        raiz->direita = remover(raiz->direita, temp->jogador.pontos, listaRemovidos);
     }
 
     return raiz;
@@ -106,11 +117,36 @@ void exibirMenu() {
     printf("\t2 - Buscar jogador por pontos\n");
     printf("\t3 - Remover jogador por pontos\n");
     printf("\t4 - Listar jogadores em ordem de pontos\n");
+    printf("\t5 - Listar jogadores removidos\n");
     printf("\t0 - Sair\n");
+}
+
+void imprimirListaRemovidos(ListaJogadoresRemovidos* listaRemovidos) {
+    if (listaRemovidos == NULL) {
+        printf("Nenhum jogador removido.\n");
+        return;
+    }
+
+    printf("Lista de jogadores removidos:\n");
+    while (listaRemovidos != NULL) {
+        printf("Nome: %s, Pontos: %d, Rebotes: %d, Assistencias: %d\n",
+               listaRemovidos->jogador.nome, listaRemovidos->jogador.pontos,
+               listaRemovidos->jogador.rebotes, listaRemovidos->jogador.assistencias);
+        listaRemovidos = listaRemovidos->proximo;
+    }
+}
+
+void liberarListaRemovidos(ListaJogadoresRemovidos* listaRemovidos) {
+    while (listaRemovidos != NULL) {
+        ListaJogadoresRemovidos* temp = listaRemovidos;
+        listaRemovidos = listaRemovidos->proximo;
+        free(temp);
+    }
 }
 
 int main() {
     No* raiz = NULL;
+    ListaJogadoresRemovidos* listaRemovidos = NULL;
 
     int opcao;
     do {
@@ -153,14 +189,17 @@ int main() {
                 int pontosRemocao;
                 printf("Informe a pontuação para remover o jogador: ");
                 scanf("%d", &pontosRemocao);
-                raiz = remover(raiz, pontosRemocao);
+                raiz = remover(raiz, pontosRemocao, &listaRemovidos);
                 printf("Jogador removido com sucesso!\n");
                 break;
             }
             case 4:
                 printf("Lista de jogadores em ordem de pontos:\n");
                 listarEmOrdem(raiz);
-                printf("O tamanho da arvore é: %d ", calcularTamanho(raiz));
+                printf("O tamanho da arvore é: %d\n", calcularTamanho(raiz));
+                break;
+            case 5:
+                imprimirListaRemovidos(listaRemovidos);
                 break;
             case 0:
                 printf("Saindo do programa. Obrigado!\n");
@@ -169,6 +208,9 @@ int main() {
                 printf("Opcao invalida. Tente novamente.\n");
         }
     } while (opcao != 0);
+
+    // Liberar a lista de jogadores removidos
+    liberarListaRemovidos(listaRemovidos);
 
     return 0;
 }
