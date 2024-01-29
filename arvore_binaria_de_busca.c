@@ -15,12 +15,12 @@ typedef struct No {
     struct No* direita;
 } No;
 
-typedef struct ListaJogadoresRemovidos {
+typedef struct ListaJR {
     Jogador jogador;
-    struct ListaJogadoresRemovidos* proximo;
-} ListaJogadoresRemovidos;
+    struct ListaJR* proximo;
+} ListaJR;
 
-No* criarNo(Jogador jogador) {
+No* criar_no(Jogador jogador) {
     No* novoNo = (No*)malloc(sizeof(No));
     novoNo->jogador = jogador;
     novoNo->esquerda = NULL;
@@ -28,51 +28,50 @@ No* criarNo(Jogador jogador) {
     return novoNo;
 }
 
-No* inserir(No* raiz, Jogador jogador) {
+No* inserir_jogadores(No* raiz, Jogador jogador) {
     if (raiz == NULL) {
-        return criarNo(jogador);
+        return criar_no(jogador);
     }
 
     if (jogador.pontos < raiz->jogador.pontos) {
-        raiz->esquerda = inserir(raiz->esquerda, jogador);
+        raiz->esquerda = inserir_jogadores(raiz->esquerda, jogador);
     } else if (jogador.pontos > raiz->jogador.pontos) {
-        raiz->direita = inserir(raiz->direita, jogador);
+        raiz->direita = inserir_jogadores(raiz->direita, jogador);
     }
 
     return raiz;
 }
 
-No* buscar(No* raiz, int pontos) {
+No* buscar_jogadores(No* raiz, int pontos) {
     if (raiz == NULL || raiz->jogador.pontos == pontos) {
         return raiz;
     }
 
     if (pontos < raiz->jogador.pontos) {
-        return buscar(raiz->esquerda, pontos);
+        return buscar_jogadores(raiz->esquerda, pontos);
     } else {
-        return buscar(raiz->direita, pontos);
+        return buscar_jogadores(raiz->direita, pontos);
     }
 }
 
-No* encontrarMinimo(No* no) {
+No* encontrar_minimo(No* no) {
     while (no->esquerda != NULL) {
         no = no->esquerda;
     }
     return no;
 }
 
-No* remover(No* raiz, int pontos, ListaJogadoresRemovidos** listaRemovidos) {
+No* remover_jogadores(No* raiz, int pontos, ListaJR** listaRemovidos) {
     if (raiz == NULL) {
         return raiz;
     }
 
     if (pontos < raiz->jogador.pontos) {
-        raiz->esquerda = remover(raiz->esquerda, pontos, listaRemovidos);
+        raiz->esquerda = remover_jogadores(raiz->esquerda, pontos, listaRemovidos);
     } else if (pontos > raiz->jogador.pontos) {
-        raiz->direita = remover(raiz->direita, pontos, listaRemovidos);
+        raiz->direita = remover_jogadores(raiz->direita, pontos, listaRemovidos);
     } else {
-        // Adicionar jogador removido à lista
-        ListaJogadoresRemovidos* novoRemovido = (ListaJogadoresRemovidos*)malloc(sizeof(ListaJogadoresRemovidos));
+        ListaJR* novoRemovido = (ListaJR*)malloc(sizeof(ListaJR));
         novoRemovido->jogador = raiz->jogador;
         novoRemovido->proximo = *listaRemovidos;
         *listaRemovidos = novoRemovido;
@@ -87,41 +86,31 @@ No* remover(No* raiz, int pontos, ListaJogadoresRemovidos** listaRemovidos) {
             return temp;
         }
 
-        No* temp = encontrarMinimo(raiz->direita);
+        No* temp = encontrar_minimo(raiz->direita);
         raiz->jogador = temp->jogador;
-        raiz->direita = remover(raiz->direita, temp->jogador.pontos, listaRemovidos);
+        raiz->direita = remover_jogadores(raiz->direita, temp->jogador.pontos, listaRemovidos);
     }
 
     return raiz;
 }
 
-void listarEmOrdem(No* raiz) {
+void imprimir_em_ordem(No* raiz) {
     if (raiz != NULL) {
-        listarEmOrdem(raiz->esquerda);
+        imprimir_em_ordem(raiz->esquerda);
         printf("Nome: %s, Pontos: %d, Rebotes: %d, Assistencias: %d\n",
                raiz->jogador.nome, raiz->jogador.pontos, raiz->jogador.rebotes, raiz->jogador.assistencias);
-        listarEmOrdem(raiz->direita);
+        imprimir_em_ordem(raiz->direita);
     }
 }
 
-int calcularTamanho(No* raiz) {
+int calcular_tamanho(No* raiz) {
     if (raiz == NULL) {
         return 0;
     }
-    return 1 + calcularTamanho(raiz->esquerda) + calcularTamanho(raiz->direita);
+    return 1 + calcular_tamanho(raiz->esquerda) + calcular_tamanho(raiz->direita);
 }
 
-void exibirMenu() {
-    printf("\nMenu:\n");
-    printf("\t1 - Inserir jogador\n");
-    printf("\t2 - Buscar jogador por pontos\n");
-    printf("\t3 - Remover jogador por pontos\n");
-    printf("\t4 - Listar jogadores em ordem de pontos\n");
-    printf("\t5 - Listar jogadores removidos\n");
-    printf("\t0 - Sair\n");
-}
-
-void imprimirListaRemovidos(ListaJogadoresRemovidos* listaRemovidos) {
+void imprimir_lista_removidos(ListaJR* listaRemovidos) {
     if (listaRemovidos == NULL) {
         printf("Nenhum jogador removido.\n");
         return;
@@ -136,17 +125,27 @@ void imprimirListaRemovidos(ListaJogadoresRemovidos* listaRemovidos) {
     }
 }
 
-void liberarListaRemovidos(ListaJogadoresRemovidos* listaRemovidos) {
+void liberar_lista_removidos(ListaJR* listaRemovidos) {
     while (listaRemovidos != NULL) {
-        ListaJogadoresRemovidos* temp = listaRemovidos;
+        ListaJR* temp = listaRemovidos;
         listaRemovidos = listaRemovidos->proximo;
         free(temp);
     }
 }
 
+void exibirMenu() {
+    printf("\nMenu:\n");
+    printf("\t1 - Inserir jogador\n");
+    printf("\t2 - Buscar jogador por pontos\n");
+    printf("\t3 - Remover jogador por pontos\n");
+    printf("\t4 - Listar jogadores em ordem de pontos\n");
+    printf("\t5 - Listar jogadores removidos\n");
+    printf("\t0 - Sair\n");
+}
+
 int main() {
     No* raiz = NULL;
-    ListaJogadoresRemovidos* listaRemovidos = NULL;
+    ListaJR* listaRemovidos = NULL;
 
     int opcao;
     do {
@@ -166,7 +165,7 @@ int main() {
                 printf("Informe o número de assistências do jogador: ");
                 scanf("%d", &novoJogador.assistencias);
 
-                raiz = inserir(raiz, novoJogador);
+                raiz = inserir_jogadores(raiz, novoJogador);
                 printf("Jogador inserido com sucesso!\n");
                 break;
             }
@@ -175,7 +174,7 @@ int main() {
                 printf("Informe a pontuação para buscar o jogador: ");
                 scanf("%d", &pontosBusca);
 
-                No* jogadorBuscado = buscar(raiz, pontosBusca);
+                No* jogadorBuscado = buscar_jogadores(raiz, pontosBusca);
                 if (jogadorBuscado != NULL) {
                     printf("Jogador encontrado - Nome: %s, Pontos: %d, Rebotes: %d, Assistencias: %d\n",
                            jogadorBuscado->jogador.nome, jogadorBuscado->jogador.pontos,
@@ -189,17 +188,17 @@ int main() {
                 int pontosRemocao;
                 printf("Informe a pontuação para remover o jogador: ");
                 scanf("%d", &pontosRemocao);
-                raiz = remover(raiz, pontosRemocao, &listaRemovidos);
+                raiz = remover_jogadores(raiz, pontosRemocao, &listaRemovidos);
                 printf("Jogador removido com sucesso!\n");
                 break;
             }
             case 4:
                 printf("Lista de jogadores em ordem de pontos:\n");
-                listarEmOrdem(raiz);
-                printf("O tamanho da arvore é: %d\n", calcularTamanho(raiz));
+                imprimir_em_ordem(raiz);
+                printf("O tamanho da arvore é: %d\n", calcular_tamanho(raiz));
                 break;
             case 5:
-                imprimirListaRemovidos(listaRemovidos);
+                imprimir_lista_removidos(listaRemovidos);
                 break;
             case 0:
                 printf("Saindo do programa. Obrigado!\n");
@@ -209,8 +208,7 @@ int main() {
         }
     } while (opcao != 0);
 
-    // Liberar a lista de jogadores removidos
-    liberarListaRemovidos(listaRemovidos);
+    liberar_lista_removidos(listaRemovidos);
 
     return 0;
 }
