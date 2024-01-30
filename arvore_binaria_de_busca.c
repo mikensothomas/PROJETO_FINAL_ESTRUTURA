@@ -133,7 +133,7 @@ void liberar_lista_removidos(ListaJR* lista_removida) {
     }
 }
 
-void exibirMenu() {
+void menu() {
     printf("\n\\\\\\\\\\MENU://///////\n\n");
     printf("\t0 - Sair do programa\n");
     printf("\t1 - Inserir jogador no jogo\n");
@@ -149,7 +149,7 @@ int main() {
 
     int opcao;
     do {
-        exibirMenu();
+        menu();
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
 
